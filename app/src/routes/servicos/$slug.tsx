@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 import { ImpaktaNav } from "@/components/impakta/impakta-nav";
 import { ContactSection } from "@/components/impakta/contact-section";
+import { CoverVideoHero } from "@/components/impakta/cover-video-hero";
 import { SERVICES, getServiceBySlug } from "@/lib/services-data";
 
 export const Route = createFileRoute("/servicos/$slug")({
@@ -21,20 +22,56 @@ function ServiceDetailPage() {
   return (
     <main className="impakta-page">
       <ImpaktaNav />
+
+      {/* Same "vídeo de capa" reel as the homepage hero, compact and looping
+          — every service page keeps the branded video running. */}
+      <CoverVideoHero
+        compact
+        eyebrow={`Serviço ${String(index + 1).padStart(2, "0")}`}
+        intro={service.statement}
+        title={service.name}
+      >
+        <a className="impakta-contact__cta" href="https://wa.me/351936330812" rel="noopener noreferrer" target="_blank">
+          Fala Connosco
+        </a>
+      </CoverVideoHero>
+
       <section className="impakta-service-hero">
         <div className="impakta-service-hero__inner">
-          <p className="impakta-eyebrow">
-            <span aria-hidden="true" className="impakta-crosshair" />
-            Serviço {String(index + 1).padStart(2, "0")}
-          </p>
-          <h1 className="impakta-service-hero__title">{service.name}</h1>
-          <p className="impakta-service-hero__statement">{service.statement}</p>
           <p className="impakta-service-hero__detail">{service.detail}</p>
-          <a className="impakta-contact__cta" href="https://wa.me/351936330812" rel="noopener noreferrer" target="_blank">
-            Fala Connosco
-          </a>
         </div>
       </section>
+
+      {service.gallery.length ? (
+        <section className="impakta-service-gallery">
+          <div className="impakta-service-gallery__inner">
+            <p className="impakta-eyebrow">
+              <span aria-hidden="true" className="impakta-crosshair" />
+              Como fica na prática
+            </p>
+            <div className="impakta-service-gallery__grid">
+              {service.gallery.map((item) => (
+                <figure className="impakta-service-gallery__item" key={item.src}>
+                  {item.kind === "video" ? (
+                    <video
+                      autoPlay
+                      className="impakta-service-gallery__media"
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                    >
+                      <source src={item.src} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <img alt={item.alt} className="impakta-service-gallery__media" loading="lazy" src={item.src} />
+                  )}
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="impakta-service-other">
         <div className="impakta-service-other__inner">
