@@ -1615,10 +1615,25 @@
 }
 
 /* ---- scroll reveal ------------------------------------------------------ */
+/* The JS-driven fade-in below is a progressive enhancement, not a
+   requirement: if hydration is slow, blocked by an extension, or never
+   completes, `.is-visible` is never added and the section would otherwise
+   stay invisible forever. The `impakta-reveal-fallback` animation is a
+   pure-CSS safety net — after a couple of seconds it forces the section
+   fully visible no matter what JS did, with zero effect on the normal
+   scroll-triggered fade for everyone else (both paths land on the exact
+   same end state, so there's nothing to visually reconcile). */
+@keyframes impakta-reveal-fallback {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 .impakta-reveal {
   opacity: 0;
   transform: translateY(1.5rem);
   transition: opacity 0.7s ease, transform 0.7s ease;
+  animation: impakta-reveal-fallback 0.01s linear 2.5s forwards;
 }
 .impakta-reveal.is-visible {
   opacity: 1;
@@ -1629,6 +1644,7 @@
     opacity: 1;
     transform: none;
     transition: none;
+    animation: none;
   }
 }
 
@@ -1842,6 +1858,8 @@
   opacity: 0;
   transform: translateY(2rem);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  /* Same JS-optional safety net as .impakta-reveal — see the comment there. */
+  animation: impakta-reveal-fallback 0.01s linear 2.5s forwards;
 }
 .impakta-story__moment.is-visible {
   opacity: 1;
@@ -1889,5 +1907,6 @@
     opacity: 1;
     transform: none;
     transition: none;
+    animation: none;
   }
 }
