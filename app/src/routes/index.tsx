@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { ScrollScrub } from "@/components/scroll-scrub/scroll-scrub";
 import { ImpaktaNav } from "@/components/impakta/impakta-nav";
 import { ContactSection } from "@/components/impakta/contact-section";
-import { scrollScrubScenes, scrollScrubTheme } from "@/scroll-scrub-scenes";
+import { CoverVideoHero } from "@/components/impakta/cover-video-hero";
 import { WORK } from "@/lib/work-data";
 import { SERVICES } from "@/lib/services-data";
 import { useReveal } from "@/hooks/use-reveal";
@@ -28,59 +27,21 @@ const CEO_PILLARS = [
   "Nenhuma estratégia consegue sustentar durante muito tempo uma liderança que ainda não está preparada para o próximo nível.",
 ];
 
-const CEO_GALLERY = [
-  {
-    src: "/assets/founder/priscila-02.jpg",
-    alt: "Priscila no sofá, a trabalhar no portátil",
-    variant: "tall",
-  },
+// Founder story, told one moment at a time as the visitor scrolls — each
+// line pairs with one of the real candid photos of Priscila, alternating
+// sides. Only confirmed real photos of Priscila herself go here — never a
+// stand-in, the chef, or food shots (the rest of the /assets/founder library
+// is generic restaurant/event photography, not usable in her personal story).
+const STORY_MOMENTS = [
   {
     src: "/assets/founder/priscila-03.jpg",
-    alt: "Priscila a sorrir, a brincar com o cabelo",
-    variant: "square",
-  },
-  {
-    src: "/assets/founder/priscila-04.jpg",
-    alt: "Priscila a rir",
-    variant: "wide",
-  },
-  {
-    src: "/assets/founder/priscila-05.jpg",
-    alt: "Priscila a olhar para um moodboard de branding",
-    variant: "wide",
+    alt: "Priscila sentada no sofá do estúdio, descalça, a trabalhar no portátil",
+    text: "Priscila Figueiredo Silva é quem está à frente da IMPAKTA desde o primeiro dia.",
   },
   {
     src: "/assets/founder/priscila-06.jpg",
-    alt: "Priscila de óculos, a folhear a revista Creative Work",
-    variant: "square",
-  },
-  {
-    src: "/assets/founder/priscila-07.jpg",
-    alt: "Priscila de óculos, numa secretária com um jogo de xadrez e uma ampulheta",
-    variant: "tall",
-  },
-];
-
-const BASTIDORES = [
-  {
-    src: "/assets/founder/bastidores-01.jpg",
-    alt: "Still-life de um prato estilizado, fotografado pela equipa",
-    label: "Produção",
-  },
-  {
-    src: "/assets/founder/bastidores-02.jpg",
-    alt: "Empregado de mesa a servir um prato",
-    label: "No terreno",
-  },
-  {
-    src: "/assets/founder/bastidores-03.jpg",
-    alt: "Mesa de restaurante preparada para uma sessão fotográfica",
-    label: "Bastidores",
-  },
-  {
-    src: "/assets/founder/bastidores-04.jpg",
-    alt: "Chef a empratar um prato para fotografia",
-    label: "No terreno",
+    alt: "Priscila a bordo, ao pôr do sol, a filmar com o telemóvel durante um evento",
+    text: "Está no terreno tanto quanto na estratégia — a acompanhar de perto cada produção, cada evento.",
   },
 ];
 
@@ -101,11 +62,20 @@ function Index() {
   return (
     <main className="impakta-page">
       <ImpaktaNav />
-      <ScrollScrub scenes={scrollScrubScenes} theme={scrollScrubTheme} />
-      <NumbersSection />
-      <WorkSection />
+      <CoverVideoHero
+        eyebrow="IMPAKTA Creative"
+        intro="Estratégia, criatividade, tecnologia e execução — eventos, redes sociais, automação, aplicativos, IA, produção de conteúdos, tráfego pago e orgânico, formação e assessoria. Tudo debaixo do mesmo teto."
+        marquee={SERVICES.map((s) => s.name)}
+        title={
+          <>
+            SOMOS <em>IMPAKTA</em>.
+          </>
+        }
+      />
       <ServicesSection />
       <CeoSection />
+      <NumbersSection />
+      <WorkSection />
       <BastidoresVideoSection />
       <ClientsSection />
       <StatementSection />
@@ -244,50 +214,17 @@ function CeoSection() {
           <p className="impakta-ceo__role">CEO &amp; Fundadora, IMPAKTA Creative</p>
         </div>
 
-        <div className="impakta-ceo__gallery">
-          <div className="impakta-ceo__portrait-wrap">
-            <img
-              alt="Priscila Figueiredo Silva, fundadora da IMPAKTA Creative, sentada à secretária com o portátil coberto de autocolantes da marca, mãos entrelaçadas, a olhar para a câmara"
-              className="impakta-ceo__portrait"
-              src="/assets/founder/priscila-portrait.jpg"
-            />
-          </div>
-          <div className="impakta-ceo__mosaic">
-            {CEO_GALLERY.map((photo) => (
-              <div
-                className={`impakta-ceo__mosaic-item impakta-ceo__mosaic-item--${photo.variant}`}
-                key={photo.src}
-              >
-                <img
-                  alt={photo.alt}
-                  className="impakta-ceo__mosaic-img"
-                  loading="lazy"
-                  src={photo.src}
-                />
-              </div>
-            ))}
-          </div>
+        <div className="impakta-ceo__portrait-wrap">
+          <img
+            alt="Priscila Figueiredo Silva, fundadora da IMPAKTA Creative, retrato de estúdio"
+            className="impakta-ceo__portrait"
+            src="/assets/branding/priscila-ceo.jpg"
+          />
         </div>
 
-        <div className="impakta-ceo__body">
-          <div className="impakta-ceo__bio">
-            <p>
-              Priscila Figueiredo Silva tem 28 anos e é a fundadora da IMPAKTA Creative. Há 10 anos
-              em Portugal — antes viveu em Espanha —, já passou pelo Porto e pelo Algarve antes de se
-              fixar em Lisboa, onde vive atualmente.
-            </p>
-            <p>
-              É ela quem está à frente da IMPAKTA desde o primeiro dia, como empreendedora e
-              fundadora, a construir uma forma própria de olhar para marcas: mais interessada em
-              perguntas difíceis do que em fórmulas fáceis.
-            </p>
-            <p>
-              Hoje é representada por uma equipa de 7 pessoas, todas a fazer um excelente trabalho —
-              e é esse grupo, tanto quanto qualquer estratégia, que continua a dar forma ao que a
-              IMPAKTA é.
-            </p>
-          </div>
+        <StorySection />
 
+        <div className="impakta-ceo__body">
           <div className="impakta-ceo__quotes">
             <p className="impakta-eyebrow impakta-eyebrow--on-dark">
               <span aria-hidden="true" className="impakta-crosshair" />
@@ -308,37 +245,42 @@ function CeoSection() {
             </a>
           </div>
         </div>
-
-        <div className="impakta-ceo__bastidores">
-          <p className="impakta-eyebrow">
-            <span aria-hidden="true" className="impakta-crosshair" />
-            Registo do dia a dia
-          </p>
-          <div className="impakta-ceo__bastidores-strip">
-            {BASTIDORES.map((photo) => (
-              <figure className="impakta-ceo__bastidores-item" key={photo.src}>
-                <img
-                  alt={photo.alt}
-                  className="impakta-ceo__bastidores-img"
-                  loading="lazy"
-                  src={photo.src}
-                />
-                <figcaption className="impakta-ceo__bastidores-caption">{photo.label}</figcaption>
-              </figure>
-            ))}
-            <figure
-              aria-hidden="true"
-              className="impakta-ceo__bastidores-item impakta-ceo__bastidores-item--video"
-            >
-              {/* Optional decorative clip — purely supporting texture, fails silently if missing. */}
-              <video autoPlay className="impakta-ceo__bastidores-video" loop muted playsInline>
-                <source src="/assets/founder/bastidores.mp4" type="video/mp4" />
-              </video>
-            </figure>
-          </div>
-        </div>
       </div>
     </section>
+  );
+}
+
+// The founder story revealed one moment at a time on scroll — each moment
+// mounts its own useReveal() so it fades/slides in independently the instant
+// it enters the viewport, alternating photo/text sides as you go.
+function StorySection() {
+  return (
+    <div className="impakta-story">
+      {STORY_MOMENTS.map((moment, i) => (
+        <StoryMoment key={moment.src} moment={moment} reverse={i % 2 === 1} />
+      ))}
+    </div>
+  );
+}
+
+function StoryMoment({
+  moment,
+  reverse,
+}: {
+  moment: (typeof STORY_MOMENTS)[number];
+  reverse: boolean;
+}) {
+  const { ref, isVisible } = useReveal<HTMLDivElement>();
+  return (
+    <div
+      className={`impakta-story__moment${reverse ? " impakta-story__moment--reverse" : ""}${isVisible ? " is-visible" : ""}`}
+      ref={ref}
+    >
+      <figure className="impakta-story__photo">
+        <img alt={moment.alt} className="impakta-story__img" loading="lazy" src={moment.src} />
+      </figure>
+      <p className="impakta-story__text">{moment.text}</p>
+    </div>
   );
 }
 
