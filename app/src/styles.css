@@ -606,33 +606,36 @@
   border-top: 1px solid color-mix(in srgb, var(--impakta-black) 14%, transparent);
 }
 .impakta-services__row {
-  display: flex;
+  display: grid;
+  /* minmax(0, ...) tracks — unlike flex: none — are allowed to shrink below
+     their content size, so a long service name (e.g. "FORMAÇÃO PESSOAL PARA
+     RESTAURANTES") wraps inside its own column instead of forcing the whole
+     row wider than the viewport (was causing site-wide horizontal overflow). */
+  grid-template-columns: auto minmax(0, 1.05fr) minmax(0, 1fr) auto;
   align-items: baseline;
   gap: clamp(1rem, 3vw, 2.5rem);
   padding: clamp(1.1rem, 2.4vw, 1.6rem) 0;
   border-bottom: 1px solid color-mix(in srgb, var(--impakta-black) 14%, transparent);
 }
 .impakta-services__index {
-  flex: none;
   font-family: var(--impakta-font-mono);
   font-size: 0.85rem;
   color: color-mix(in srgb, var(--impakta-black) 45%, transparent);
 }
 .impakta-services__name {
-  flex: none;
+  min-width: 0;
   margin: 0;
   font-family: var(--impakta-font-display);
   font-weight: 600;
-  font-size: clamp(1.4rem, 3.4vw, 2.35rem);
+  font-size: clamp(1.15rem, 2.6vw, 2.35rem);
   letter-spacing: -0.01em;
 }
 .impakta-services__statement {
-  flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
   font-size: 0.98rem;
   line-height: 1.5;
   color: color-mix(in srgb, var(--impakta-black) 62%, transparent);
-  max-width: 34ch;
 }
 .impakta-services__row:hover .impakta-services__name,
 .impakta-services__row:focus-within .impakta-services__name {
@@ -640,10 +643,10 @@
 }
 @media (max-width: 760px) {
   .impakta-services__row {
-    flex-wrap: wrap;
+    grid-template-columns: auto 1fr;
   }
   .impakta-services__statement {
-    max-width: none;
+    grid-column: 1 / -1;
   }
   .impakta-services__link {
     margin-left: auto;
@@ -652,7 +655,6 @@
 
 /* Small pink pill CTA on every service row, linking to /servicos/:slug. */
 .impakta-services__link {
-  flex: none;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -718,17 +720,12 @@
   color: color-mix(in srgb, var(--impakta-black) 55%, transparent);
 }
 
-/* photo gallery: large portrait + asymmetric mosaic */
-.impakta-ceo__gallery {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: clamp(1rem, 2.5vw, 1.75rem);
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-}
 .impakta-ceo__portrait-wrap {
   position: relative;
   overflow: hidden;
+  max-width: 24rem;
   aspect-ratio: 3 / 4;
+  margin: clamp(2.5rem, 5vw, 4rem) 0 0;
   background: #f2f2f2;
 }
 .impakta-ceo__portrait-wrap::after {
@@ -777,13 +774,13 @@
   transform: scale(1.05);
 }
 
-/* narrative bio + dark pull-quote strip (real philosophy lines + Instagram) */
+/* dark pull-quote strip (real philosophy lines + Instagram) — the bio prose
+   itself now lives in the scroll-revealed .impakta-story above. */
 .impakta-ceo__body {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(2.5rem, 5vw, 4rem);
-  align-items: start;
   margin-top: clamp(3rem, 6vw, 5rem);
+}
+.impakta-ceo__quotes {
+  max-width: 40rem;
 }
 .impakta-ceo__bio p {
   margin: 0 0 1.15rem;
@@ -1181,6 +1178,11 @@
   margin: 0;
   font-family: var(--impakta-font-display);
   font-size: 1.05rem;
+  /* Long unbreakable strings (the email address especially) must be able to
+     wrap inside their narrow grid column on mobile instead of overflowing
+     the viewport. */
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .impakta-contact__value--link {
   color: var(--impakta-white);
@@ -1394,7 +1396,7 @@
 
 /* ---- /servicos/$slug detail page ---------------------------------------------- */
 .impakta-service-hero {
-  padding: clamp(8rem, 14vw, 11rem) clamp(1.25rem, 6vw, 5rem) clamp(4rem, 8vw, 6rem);
+  padding: clamp(3rem, 6vw, 4.5rem) clamp(1.25rem, 6vw, 5rem) clamp(1.5rem, 3vw, 2rem);
   background: var(--impakta-white);
 }
 .impakta-service-hero__inner {
@@ -1494,6 +1496,266 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .impakta-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   COVER VIDEO HERO — shared "vídeo de capa" banner. Full-bleed on "/", a
+   shorter compact variant reused at the top of every /servicos/$slug page so
+   the same branded reel is always present, looping, across the site. Dark,
+   editorial, fluorescent-green + pink accents on black — the IMPAKTA take on
+   a bold agency-reel hero.
+   ========================================================================== */
+.impakta-cover-hero {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--impakta-black);
+  color: var(--impakta-white);
+}
+.impakta-cover-hero--compact {
+  min-height: clamp(26rem, 62vw, 34rem);
+  align-items: flex-end;
+}
+.impakta-cover-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.impakta-cover-hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+.impakta-cover-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.55) 0%, rgba(10, 10, 10, 0.35) 38%, rgba(10, 10, 10, 0.92) 100%),
+    linear-gradient(90deg, rgba(10, 10, 10, 0.55) 0%, rgba(10, 10, 10, 0) 45%);
+}
+.impakta-cover-hero__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.impakta-cover-hero__glow--green {
+  width: 26rem;
+  height: 26rem;
+  right: -8rem;
+  top: -6rem;
+  background: var(--impakta-green);
+}
+.impakta-cover-hero__glow--pink {
+  width: 22rem;
+  height: 22rem;
+  left: -6rem;
+  bottom: 10%;
+  background: var(--impakta-pink);
+}
+.impakta-cover-hero__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: clamp(6rem, 12vw, 9rem) clamp(1.25rem, 6vw, 5rem) clamp(2.25rem, 5vw, 3.5rem);
+}
+.impakta-cover-hero__title {
+  margin: 0;
+  max-width: 20ch;
+  font-family: var(--impakta-font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+  font-size: clamp(2.6rem, 8vw, 6.5rem);
+  text-transform: uppercase;
+}
+.impakta-cover-hero__title em {
+  font-style: normal;
+  color: var(--impakta-green);
+}
+.impakta-cover-hero--compact .impakta-cover-hero__title {
+  font-size: clamp(2rem, 5.6vw, 3.75rem);
+}
+.impakta-cover-hero__intro {
+  margin: 1.1rem 0 0;
+  max-width: 40ch;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--impakta-white) 82%, transparent);
+}
+
+/* Scrolling service-name marquee across the hero, right under the title —
+   this is how "falamos logo dos serviços" happens inside the hero itself. */
+.impakta-cover-hero__marquee {
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  overflow: hidden;
+  border-top: 1px solid color-mix(in srgb, var(--impakta-white) 22%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--impakta-white) 22%, transparent);
+  padding: 0.85rem 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.impakta-cover-hero__marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 2.5rem;
+  animation: impakta-marquee 32s linear infinite;
+}
+.impakta-cover-hero__marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  white-space: nowrap;
+  font-family: var(--impakta-font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--impakta-white) 85%, transparent);
+}
+.impakta-cover-hero__marquee-item::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--impakta-green);
+}
+@keyframes impakta-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .impakta-cover-hero__marquee-track {
+    animation: none;
+  }
+}
+@media (max-width: 640px) {
+  .impakta-cover-hero {
+    align-items: flex-end;
+  }
+  .impakta-cover-hero__video {
+    object-position: 62% 30%;
+  }
+}
+
+/* ==========================================================================
+   SERVICE PAGE — image/video gallery under the compact cover-hero.
+   ========================================================================== */
+.impakta-service-gallery {
+  padding: clamp(3rem, 7vw, 5rem) clamp(1.25rem, 6vw, 5rem);
+  background: var(--impakta-white);
+  border-top: 1px solid color-mix(in srgb, var(--impakta-black) 10%, transparent);
+}
+.impakta-service-gallery__inner {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+.impakta-service-gallery__grid {
+  margin-top: 1.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(0.85rem, 2vw, 1.5rem);
+}
+.impakta-service-gallery__item {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--impakta-black) 6%, transparent);
+}
+.impakta-service-gallery__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (max-width: 640px) {
+  .impakta-service-gallery__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   FOUNDER STORYTELLING — sequential moments that fade/slide in one at a time
+   as the visitor scrolls past the section, each pairing a short line of
+   Priscila's story with a photo. Built on the same one-shot IntersectionObserver
+   pattern as .impakta-reveal, just applied per-moment instead of per-section.
+   ========================================================================== */
+.impakta-story {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3.5rem, 8vw, 6rem);
+}
+.impakta-story__moment {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.impakta-story__moment.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.impakta-story__moment--reverse {
+  direction: rtl;
+}
+.impakta-story__moment--reverse > * {
+  direction: ltr;
+}
+.impakta-story__photo {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--impakta-black) 6%, transparent);
+}
+.impakta-story__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.impakta-story__text {
+  font-family: var(--impakta-font-display);
+  font-weight: 600;
+  font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+  color: var(--impakta-black);
+}
+.impakta-story__text mark {
+  background: none;
+  color: var(--impakta-pink);
+}
+@media (max-width: 760px) {
+  .impakta-story__moment,
+  .impakta-story__moment--reverse {
+    grid-template-columns: 1fr;
+    direction: ltr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .impakta-story__moment {
     opacity: 1;
     transform: none;
     transition: none;
