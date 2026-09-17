@@ -1,17 +1,15 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 
-import { ImpaktaNav } from "@/components/impakta/impakta-nav";
-import { ContactSection } from "@/components/impakta/contact-section";
-import { CoverVideoHero } from "@/components/impakta/cover-video-hero";
-import { SERVICES, getServiceBySlug } from "@/lib/services-data";
+import { getServiceBySlug } from "@/lib/services-data";
+import { ServiceDetailPage } from "@/pages/service-detail-page";
 
 export const Route = createFileRoute("/servicos/$slug")({
   loader: ({ params }) => {
-    const service = getServiceBySlug(params.slug);
+    const service = getServiceBySlug(params.slug, "pt");
     if (!service) throw notFound();
     return service;
   },
-  component: ServiceDetailPage,
+  component: () => <ServiceDetailPage locale="pt" service={Route.useLoaderData()} />,
 });
 
 function ServiceDetailPage() {
