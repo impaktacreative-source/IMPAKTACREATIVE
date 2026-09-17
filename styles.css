@@ -320,6 +320,54 @@
   outline-offset: 2px;
 }
 
+/* Language switcher — PT / EN / ES, next to the WhatsApp CTA. */
+.impakta-nav__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  border: 1.5px solid color-mix(in srgb, var(--impakta-white) 30%, transparent);
+  padding: 0.2rem;
+}
+.impakta-nav__lang-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.35rem;
+  color: color-mix(in srgb, var(--impakta-white) 65%, transparent);
+  font-family: var(--impakta-font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.impakta-nav__lang-item:hover,
+.impakta-nav__lang-item:focus-visible {
+  color: var(--impakta-white);
+  outline: none;
+}
+.impakta-nav__lang-item--active {
+  color: var(--impakta-black);
+  background: var(--impakta-green);
+}
+@media (max-width: 480px) {
+  .impakta-nav__actions {
+    gap: 0.4rem;
+  }
+  .impakta-nav__lang-item {
+    min-width: 1.4rem;
+    height: 1.4rem;
+    padding: 0 0.22rem;
+    font-size: 0.6rem;
+  }
+  .impakta-nav__cta {
+    padding: 0 0.7rem;
+    font-size: 0.7rem;
+  }
+}
+
 /* Hamburger toggle — two bars that fan into an X while the menu is open. */
 .impakta-nav__toggle {
   position: relative;
@@ -536,6 +584,28 @@
   object-fit: cover;
   filter: grayscale(0.15) contrast(1.05);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.impakta-work__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--impakta-black) 6%, transparent),
+    color-mix(in srgb, var(--impakta-black) 6%, transparent) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+.impakta-work__placeholder span {
+  font-family: var(--impakta-font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--impakta-black) 45%, transparent);
 }
 .impakta-work__item:hover .impakta-work__img {
   transform: scale(1.045);
@@ -1388,9 +1458,69 @@
   text-transform: uppercase;
   color: color-mix(in srgb, var(--impakta-black) 62%, transparent);
 }
+.impakta-case__pending {
+  margin: 1.5rem 0 0;
+  padding: 0.6rem 0.85rem;
+  border: 1px dashed color-mix(in srgb, var(--impakta-black) 25%, transparent);
+  font-family: var(--impakta-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--impakta-black) 55%, transparent);
+  max-width: fit-content;
+}
+.impakta-case__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--impakta-black) 6%, transparent),
+    color-mix(in srgb, var(--impakta-black) 6%, transparent) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+.impakta-case__placeholder span {
+  font-family: var(--impakta-font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--impakta-black) 45%, transparent);
+}
+.impakta-case__gallery {
+  grid-column: 1 / -1;
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: clamp(0.6rem, 1.5vw, 1rem);
+}
+.impakta-case__gallery-item {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #f2f2f2;
+}
+.impakta-case__gallery-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.15) contrast(1.05);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.impakta-case__gallery-item:hover .impakta-case__gallery-img {
+  transform: scale(1.045);
+}
 @media (max-width: 860px) {
   .impakta-case {
     grid-template-columns: 1fr;
+  }
+  .impakta-case__gallery {
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
   }
 }
 
