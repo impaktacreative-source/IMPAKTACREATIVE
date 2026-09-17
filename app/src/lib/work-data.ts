@@ -6,14 +6,29 @@ export interface WorkItem {
   slug: string;
   client: string;
   category: string;
-  img: string;
+  // Cover image used in the homepage teaser grid and as the featured shot
+  // on /trabalho. Optional: a client whose photos haven't arrived yet
+  // renders a "fotos a chegar" placeholder instead of a broken <img>.
+  img?: string;
+  // Full photo set for the client, shown as a gallery on /trabalho below
+  // the case copy. Keep pushing paths here as more photos come in — no
+  // other change is needed, the gallery grid grows on its own.
+  gallery?: string[];
   variant: WorkVariant;
   year: string;
   services: string[];
   summary: string;
-  desafio: string;
-  abordagem: string;
-  resultado: string;
+  // desafio/abordagem/resultado are optional on purpose: per the project's
+  // portfolio brief, IMPAKTA never invents challenges, approach narratives
+  // or results for a client — these are only filled in with real input
+  // from Priscila. Until then the case just shows client, services and
+  // photos, with `pendingNote` flagging what's still missing.
+  desafio?: string;
+  abordagem?: string;
+  resultado?: string;
+  // Short note rendered as a clearly-marked placeholder when a section is
+  // still incomplete (more photos or copy coming later).
+  pendingNote?: string;
 }
 
 export const WORK: WorkItem[] = [
@@ -73,5 +88,75 @@ export const WORK: WorkItem[] = [
     abordagem:
       "Design editorial, motor de reservas direto e produção visual acelerada por IA para o catálogo.",
     resultado: "As reservas diretas passaram a superar as feitas por plataformas de terceiros.",
+  },
+  {
+    slug: "grupo-ferreira",
+    client: "Grupo Ferreira",
+    category: "REDES SOCIAIS & TRÁFEGO",
+    img: "/assets/work/grupo-ferreira/grupo-ferreira-01.jpg",
+    gallery: [
+      "/assets/work/grupo-ferreira/grupo-ferreira-01.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-02.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-03.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-04.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-05.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-06.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-07.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-08.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-09.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-10.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-11.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-12.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-13.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-14.jpg",
+      "/assets/work/grupo-ferreira/grupo-ferreira-15.jpg",
+    ],
+    variant: "a",
+    year: "2026",
+    services: ["Gestão de Redes Sociais", "Tráfego Pago", "Automação"],
+    summary:
+      "Gestão de redes sociais, tráfego pago e automação para os espaços de restauração do Grupo Ferreira.",
+  },
+  {
+    slug: "sillage-eventos",
+    client: "Sillage Eventos",
+    category: "EVENTOS",
+    img: "/assets/work/sillage-eventos/sillage-eventos-01.jpg",
+    gallery: ["/assets/work/sillage-eventos/sillage-eventos-01.jpg"],
+    variant: "b",
+    year: "2026",
+    services: [],
+    summary: "Cobertura de noites de eventos da Sillage — ambiente, música ao vivo e experiência à mesa.",
+    pendingNote: "Mais fotos e o texto final chegam em breve.",
+  },
+  {
+    slug: "lmo-advogados",
+    client: "Lmo Advogados",
+    category: "ADVOCACIA",
+    variant: "c",
+    year: "2026",
+    services: [],
+    summary: "Secção reservada para o trabalho com a Lmo Advogados.",
+    pendingNote: "Fotos e texto a chegar.",
+  },
+  {
+    slug: "supermercado-amanhecer",
+    client: "Supermercado Amanhecer",
+    category: "RETALHO",
+    variant: "d",
+    year: "2026",
+    services: [],
+    summary: "Secção reservada para o trabalho com o Supermercado Amanhecer.",
+    pendingNote: "Fotos e texto a chegar.",
+  },
+  {
+    slug: "clinicaltos",
+    client: "ClinicAltos",
+    category: "CLÍNICA DE ESTÉTICA",
+    variant: "a",
+    year: "2026",
+    services: [],
+    summary: "Secção reservada para o trabalho com a ClinicAltos, clínica de estética.",
+    pendingNote: "Fotos e texto a chegar.",
   },
 ];
