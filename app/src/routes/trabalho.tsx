@@ -44,7 +44,13 @@ function TrabalhoList() {
         {WORK.map((item, index) => (
           <article className="impakta-case" id={item.slug} key={item.slug}>
             <div className="impakta-case__media">
-              <img alt={item.client} className="impakta-case__img" loading="lazy" src={item.img} />
+              {item.img ? (
+                <img alt={item.client} className="impakta-case__img" loading="lazy" src={item.img} />
+              ) : (
+                <div className="impakta-case__placeholder" role="img" aria-label={`${item.client} — fotos a chegar`}>
+                  <span>Fotos a chegar</span>
+                </div>
+              )}
             </div>
             <div className="impakta-case__copy">
               <span className="impakta-case__index">{String(index + 1).padStart(2, "0")}</span>
@@ -55,27 +61,54 @@ function TrabalhoList() {
               </h2>
               <p className="impakta-case__summary">{item.summary}</p>
 
-              <dl className="impakta-case__facts">
-                <div>
-                  <dt>Desafio</dt>
-                  <dd>{item.desafio}</dd>
-                </div>
-                <div>
-                  <dt>Abordagem</dt>
-                  <dd>{item.abordagem}</dd>
-                </div>
-                <div>
-                  <dt>Resultado</dt>
-                  <dd>{item.resultado}</dd>
-                </div>
-              </dl>
+              {(item.desafio || item.abordagem || item.resultado) && (
+                <dl className="impakta-case__facts">
+                  {item.desafio && (
+                    <div>
+                      <dt>Desafio</dt>
+                      <dd>{item.desafio}</dd>
+                    </div>
+                  )}
+                  {item.abordagem && (
+                    <div>
+                      <dt>Abordagem</dt>
+                      <dd>{item.abordagem}</dd>
+                    </div>
+                  )}
+                  {item.resultado && (
+                    <div>
+                      <dt>Resultado</dt>
+                      <dd>{item.resultado}</dd>
+                    </div>
+                  )}
+                </dl>
+              )}
 
-              <ul className="impakta-case__services">
-                {item.services.map((service) => (
-                  <li key={service}>{service}</li>
-                ))}
-              </ul>
+              {item.services.length > 0 && (
+                <ul className="impakta-case__services">
+                  {item.services.map((service) => (
+                    <li key={service}>{service}</li>
+                  ))}
+                </ul>
+              )}
+
+              {item.pendingNote && <p className="impakta-case__pending">{item.pendingNote}</p>}
             </div>
+
+            {item.gallery && item.gallery.length > 1 && (
+              <div className="impakta-case__gallery">
+                {item.gallery.map((src, i) => (
+                  <div className="impakta-case__gallery-item" key={src}>
+                    <img
+                      alt={`${item.client} — foto ${i + 1}`}
+                      className="impakta-case__gallery-img"
+                      loading="lazy"
+                      src={src}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </article>
         ))}
       </div>

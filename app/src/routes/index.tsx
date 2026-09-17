@@ -146,7 +146,13 @@ function WorkSection() {
               key={item.slug}
               to="/trabalho"
             >
-              <img alt={item.client} className="impakta-work__img" loading="lazy" src={item.img} />
+              {item.img ? (
+                <img alt={item.client} className="impakta-work__img" loading="lazy" src={item.img} />
+              ) : (
+                <div className="impakta-work__placeholder" role="img" aria-label={`${item.client} — fotos a chegar`}>
+                  <span>Fotos a chegar</span>
+                </div>
+              )}
               <div className="impakta-work__meta">
                 <span className="impakta-work__client">{item.client}</span>
                 <span className="impakta-work__cat">{item.category}</span>
