@@ -43,6 +43,21 @@ const STORY_MOMENTS = [
     alt: "Priscila a bordo, ao pôr do sol, a filmar com o telemóvel durante um evento",
     text: "Está no terreno tanto quanto na estratégia — a acompanhar de perto cada produção, cada evento.",
   },
+  {
+    src: "/assets/founder/priscila-08.jpg",
+    alt: "Priscila a fotografar uma convidada com o telemóvel, durante um jantar de evento",
+    text: "Atenta a cada detalhe, mesmo fora do estúdio — a captar o momento em tempo real.",
+  },
+  {
+    src: "/assets/founder/priscila-09.jpg",
+    alt: "Retrato de Priscila, olhar direto para a câmara",
+    text: "Presente em cada reunião, cada apresentação, cada decisão que molda uma marca.",
+  },
+  {
+    src: "/assets/founder/priscila-10.jpg",
+    alt: "Priscila a sorrir, recostada na cadeira",
+    text: "E genuína em cada momento — dentro e fora do trabalho.",
+  },
 ];
 
 const BASTIDORES_VIDEOS = [
