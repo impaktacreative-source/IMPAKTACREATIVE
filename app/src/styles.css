@@ -320,6 +320,54 @@
   outline-offset: 2px;
 }
 
+/* Language switcher — PT / EN / ES, next to the WhatsApp CTA. */
+.impakta-nav__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  border: 1.5px solid color-mix(in srgb, var(--impakta-white) 30%, transparent);
+  padding: 0.2rem;
+}
+.impakta-nav__lang-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.35rem;
+  color: color-mix(in srgb, var(--impakta-white) 65%, transparent);
+  font-family: var(--impakta-font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.impakta-nav__lang-item:hover,
+.impakta-nav__lang-item:focus-visible {
+  color: var(--impakta-white);
+  outline: none;
+}
+.impakta-nav__lang-item--active {
+  color: var(--impakta-black);
+  background: var(--impakta-green);
+}
+@media (max-width: 480px) {
+  .impakta-nav__actions {
+    gap: 0.4rem;
+  }
+  .impakta-nav__lang-item {
+    min-width: 1.4rem;
+    height: 1.4rem;
+    padding: 0 0.22rem;
+    font-size: 0.6rem;
+  }
+  .impakta-nav__cta {
+    padding: 0 0.7rem;
+    font-size: 0.7rem;
+  }
+}
+
 /* Hamburger toggle — two bars that fan into an X while the menu is open. */
 .impakta-nav__toggle {
   position: relative;
@@ -1170,6 +1218,224 @@
   outline-offset: 3px;
 }
 
+/* lead form (contact block) */
+.impakta-contact__intro {
+  margin: 1.25rem auto 0;
+  max-width: 46ch;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--impakta-black) 70%, transparent);
+}
+.impakta-form {
+  margin: 2.5rem auto 0;
+  max-width: 52rem;
+  text-align: left;
+  scroll-margin-top: 6rem;
+}
+.impakta-form__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.impakta-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+}
+.impakta-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+.impakta-form__field--wide {
+  grid-column: 1 / -1;
+}
+.impakta-form__field > span,
+.impakta-form__services legend {
+  font-family: var(--impakta-font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--impakta-black) 65%, transparent);
+}
+.impakta-form input[type="text"],
+.impakta-form input[type="email"],
+.impakta-form input[type="tel"],
+.impakta-form select,
+.impakta-form textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 0.9rem;
+  border: 1.5px solid color-mix(in srgb, var(--impakta-black) 22%, transparent);
+  border-radius: 0;
+  background: var(--impakta-white);
+  color: var(--impakta-black);
+  font: inherit;
+  font-size: 1rem;
+}
+.impakta-form textarea {
+  resize: vertical;
+  min-height: 7rem;
+}
+.impakta-form input:focus-visible,
+.impakta-form select:focus-visible,
+.impakta-form textarea:focus-visible {
+  outline: none;
+  border-color: var(--impakta-pink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--impakta-pink) 25%, transparent);
+}
+.impakta-form__services {
+  margin: 1.75rem 0;
+  padding: 0;
+  border: 0;
+}
+.impakta-form__services legend {
+  margin-bottom: 0.75rem;
+  padding: 0;
+}
+.impakta-form__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.impakta-form__chip {
+  position: relative;
+  cursor: pointer;
+}
+.impakta-form__chip input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.impakta-form__chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.95rem;
+  border: 1.5px solid color-mix(in srgb, var(--impakta-black) 22%, transparent);
+  font-family: var(--impakta-font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.impakta-form__chip:hover span {
+  border-color: var(--impakta-black);
+}
+.impakta-form__chip input:checked + span {
+  border-color: var(--impakta-black);
+  background: var(--impakta-black);
+  color: var(--impakta-white);
+}
+.impakta-form__chip input:focus-visible + span {
+  outline: 2px solid var(--impakta-pink);
+  outline-offset: 2px;
+}
+.impakta-form__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.impakta-form__consent input {
+  flex: none;
+  appearance: none;
+  -webkit-appearance: none;
+  display: grid;
+  place-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0.1rem 0 0;
+  border: 1.5px solid var(--impakta-black);
+  background: var(--impakta-white);
+  cursor: pointer;
+}
+.impakta-form__consent input::before {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  background: var(--impakta-black);
+  transform: scale(0);
+  transition: transform 0.15s ease;
+}
+.impakta-form__consent input:checked {
+  background: var(--impakta-pink);
+}
+.impakta-form__consent input:checked::before {
+  transform: scale(1);
+}
+.impakta-form__consent input:focus-visible {
+  outline: 2px solid var(--impakta-pink);
+  outline-offset: 2px;
+}
+.impakta-form__problem {
+  margin: 1rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border-left: 3px solid var(--impakta-pink);
+  background: color-mix(in srgb, var(--impakta-pink) 10%, var(--impakta-white));
+  font-size: 0.95rem;
+}
+.impakta-form__problem a {
+  color: inherit;
+  font-weight: 600;
+}
+.impakta-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin-top: 1.75rem;
+}
+.impakta-form__submit {
+  margin-top: 0;
+  cursor: pointer;
+}
+.impakta-form__submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  transform: none;
+}
+.impakta-form__alt {
+  color: var(--impakta-black);
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.impakta-form__alt:hover {
+  color: var(--impakta-pink);
+}
+.impakta-form--done {
+  padding: 2.5rem 1.5rem;
+  border: 2px solid var(--impakta-black);
+  text-align: center;
+}
+.impakta-form__done-title {
+  margin: 0;
+  font-family: var(--impakta-font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.impakta-form__done-text {
+  margin: 0.5rem 0 0;
+}
+@media (max-width: 640px) {
+  .impakta-form__grid {
+    grid-template-columns: 1fr;
+  }
+  .impakta-form__submit {
+    width: 100%;
+  }
+}
+
 /* dark band */
 .impakta-contact__band {
   background: var(--impakta-black);
@@ -1567,10 +1833,25 @@
 }
 
 /* ---- scroll reveal ------------------------------------------------------ */
+/* The JS-driven fade-in below is a progressive enhancement, not a
+   requirement: if hydration is slow, blocked by an extension, or never
+   completes, `.is-visible` is never added and the section would otherwise
+   stay invisible forever. The `impakta-reveal-fallback` animation is a
+   pure-CSS safety net — after a couple of seconds it forces the section
+   fully visible no matter what JS did, with zero effect on the normal
+   scroll-triggered fade for everyone else (both paths land on the exact
+   same end state, so there's nothing to visually reconcile). */
+@keyframes impakta-reveal-fallback {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 .impakta-reveal {
   opacity: 0;
   transform: translateY(1.5rem);
   transition: opacity 0.7s ease, transform 0.7s ease;
+  animation: impakta-reveal-fallback 0.01s linear 2.5s forwards;
 }
 .impakta-reveal.is-visible {
   opacity: 1;
@@ -1581,6 +1862,7 @@
     opacity: 1;
     transform: none;
     transition: none;
+    animation: none;
   }
 }
 
@@ -1794,6 +2076,8 @@
   opacity: 0;
   transform: translateY(2rem);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  /* Same JS-optional safety net as .impakta-reveal — see the comment there. */
+  animation: impakta-reveal-fallback 0.01s linear 2.5s forwards;
 }
 .impakta-story__moment.is-visible {
   opacity: 1;
@@ -1841,5 +2125,6 @@
     opacity: 1;
     transform: none;
     transition: none;
+    animation: none;
   }
 }

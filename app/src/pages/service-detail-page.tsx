@@ -26,7 +26,7 @@ export function ServiceDetailPage({ locale, service }: { locale: Locale; service
         intro={service.statement}
         title={service.name}
       >
-        <a className="impakta-contact__cta" href="https://wa.me/351936330812" rel="noopener noreferrer" target="_blank">
+        <a className="impakta-contact__cta" href="#formulario">
           {dict.nav.cta}
         </a>
       </CoverVideoHero>

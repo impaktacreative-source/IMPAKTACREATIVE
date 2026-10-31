@@ -4,9 +4,11 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { HTML_LANG, localeFromPathname } from "../lib/i18n/locale";
 import { useEffect, type ReactNode } from "react";
 import { button } from "@higgsfield/quanta/button";
 import { NotFound } from "@higgsfield/quanta/not-found";
@@ -178,8 +180,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  // The IMPAKTA site lives at three locale-prefixed URL trees ("/", "/en",
+  // "/es"); <html lang> must track whichever one is currently rendering, for
+  // accessibility and SEO. Derived from the router's own pathname so it's
+  // correct on the very first SSR pass, no client-only flash.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const locale = localeFromPathname(pathname);
+
   return (
-    <html lang="pt" data-theme="default-dark" style={{ colorScheme: "dark" }}>
+    <html lang={HTML_LANG[locale]} data-theme="default-dark" style={{ colorScheme: "dark" }}>
       {/* Marketplace apps are permanently dark: data-theme is pinned on <html>
           above. Do not add quanta's bootstrapScript/ThemeController, a theme
           toggle, or a light mode. The IMPAKTA page itself renders its own

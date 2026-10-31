@@ -1,36 +1,35 @@
 import { InstagramIcon, WhatsappIcon } from "@/components/impakta/social-icons";
+import type { Locale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/dictionary";
+import { LeadForm } from "@/components/impakta/lead-form";
 
 // Shared footer/contact block rendered at the bottom of every IMPAKTA page
-// (home, /trabalho, /servicos/$slug) so contact info + nav anchors stay
-// consistent site-wide.
-export function ContactSection() {
+// (home, /trabalho, /servicos/$slug) in all three languages, so contact
+// info + nav anchors stay consistent site-wide.
+export function ContactSection({ locale }: { locale: Locale }) {
   const year = new Date().getFullYear();
+  const dict = getDictionary(locale);
 
   return (
     <section className="impakta-contact" id="contacto">
       <div className="impakta-contact__top">
         <h2 className="impakta-contact__title">
-          Vamos criar o próximo impakt<span className="impakta-contact__dot">.</span>
+          {dict.contact.title}
+          <span className="impakta-contact__dot">.</span>
         </h2>
-        <a
-          className="impakta-contact__cta"
-          href="https://wa.me/351936330812"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Fala Connosco
-        </a>
+        <p className="impakta-contact__intro">{dict.contact.form.intro}</p>
+        <LeadForm locale={locale} />
       </div>
 
       <div className="impakta-contact__band">
         <div className="impakta-contact__band-inner">
           <div className="impakta-contact__col">
-            <p className="impakta-contact__heading">Morada</p>
-            <p className="impakta-contact__value">Avenida do Atlântico 16, piso 8, porta 9, 1990-019 Lisboa</p>
+            <p className="impakta-contact__heading">{dict.contact.addressLabel}</p>
+            <p className="impakta-contact__value">{dict.contact.addressValue}</p>
           </div>
 
           <div className="impakta-contact__col">
-            <p className="impakta-contact__heading">Email</p>
+            <p className="impakta-contact__heading">{dict.contact.emailLabel}</p>
             <a
               className="impakta-contact__value impakta-contact__value--link"
               href="mailto:impaktacreative@gmail.com"
@@ -40,7 +39,7 @@ export function ContactSection() {
           </div>
 
           <div className="impakta-contact__col">
-            <p className="impakta-contact__heading">WhatsApp</p>
+            <p className="impakta-contact__heading">{dict.contact.whatsappLabel}</p>
             <a
               className="impakta-contact__value impakta-contact__value--link"
               href="https://wa.me/351936330812"
@@ -75,9 +74,9 @@ export function ContactSection() {
       </div>
 
       <div className="impakta-contact__bottom">
-        <span>© {year} IMPAKTA Creative. Todos os direitos reservados.</span>
+        <span>{dict.contact.rights(year)}</span>
         {/* TODO: point to a real privacy policy page once one exists */}
-        <a href="#">Política de Privacidade</a>
+        <a href="#">{dict.contact.privacy}</a>
       </div>
     </section>
   );

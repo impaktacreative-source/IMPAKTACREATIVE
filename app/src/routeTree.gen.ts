@@ -13,7 +13,13 @@ import { Route as TrabalhoRouteImport } from './routes/trabalho'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EsIndexRouteImport } from './routes/es/index'
+import { Route as EnIndexRouteImport } from './routes/en/index'
 import { Route as ServicosSlugRouteImport } from './routes/servicos/$slug'
+import { Route as EsTrabalhoRouteImport } from './routes/es/trabalho'
+import { Route as EnTrabalhoRouteImport } from './routes/en/trabalho'
+import { Route as EsServicosSlugRouteImport } from './routes/es/servicos/$slug'
+import { Route as EnServicosSlugRouteImport } from './routes/en/servicos/$slug'
 
 const TrabalhoRoute = TrabalhoRouteImport.update({
   id: '/trabalho',
@@ -35,9 +41,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EsIndexRoute = EsIndexRouteImport.update({
+  id: '/es/',
+  path: '/es/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnIndexRoute = EnIndexRouteImport.update({
+  id: '/en/',
+  path: '/en/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicosSlugRoute = ServicosSlugRouteImport.update({
   id: '/servicos/$slug',
   path: '/servicos/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsTrabalhoRoute = EsTrabalhoRouteImport.update({
+  id: '/es/trabalho',
+  path: '/es/trabalho',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnTrabalhoRoute = EnTrabalhoRouteImport.update({
+  id: '/en/trabalho',
+  path: '/en/trabalho',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsServicosSlugRoute = EsServicosSlugRouteImport.update({
+  id: '/es/servicos/$slug',
+  path: '/es/servicos/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnServicosSlugRoute = EnServicosSlugRouteImport.update({
+  id: '/en/servicos/$slug',
+  path: '/en/servicos/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -46,14 +82,26 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trabalho': typeof TrabalhoRoute
+  '/en/trabalho': typeof EnTrabalhoRoute
+  '/es/trabalho': typeof EsTrabalhoRoute
   '/servicos/$slug': typeof ServicosSlugRoute
+  '/en/': typeof EnIndexRoute
+  '/es/': typeof EsIndexRoute
+  '/en/servicos/$slug': typeof EnServicosSlugRoute
+  '/es/servicos/$slug': typeof EsServicosSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trabalho': typeof TrabalhoRoute
+  '/en/trabalho': typeof EnTrabalhoRoute
+  '/es/trabalho': typeof EsTrabalhoRoute
   '/servicos/$slug': typeof ServicosSlugRoute
+  '/en': typeof EnIndexRoute
+  '/es': typeof EsIndexRoute
+  '/en/servicos/$slug': typeof EnServicosSlugRoute
+  '/es/servicos/$slug': typeof EsServicosSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,21 +109,54 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trabalho': typeof TrabalhoRoute
+  '/en/trabalho': typeof EnTrabalhoRoute
+  '/es/trabalho': typeof EsTrabalhoRoute
   '/servicos/$slug': typeof ServicosSlugRoute
+  '/en/': typeof EnIndexRoute
+  '/es/': typeof EsIndexRoute
+  '/en/servicos/$slug': typeof EnServicosSlugRoute
+  '/es/servicos/$slug': typeof EsServicosSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/robots.txt' | '/sitemap.xml' | '/trabalho' | '/servicos/$slug'
+    | '/'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/trabalho'
+    | '/en/trabalho'
+    | '/es/trabalho'
+    | '/servicos/$slug'
+    | '/en/'
+    | '/es/'
+    | '/en/servicos/$slug'
+    | '/es/servicos/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/robots.txt' | '/sitemap.xml' | '/trabalho' | '/servicos/$slug'
+  to:
+    | '/'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/trabalho'
+    | '/en/trabalho'
+    | '/es/trabalho'
+    | '/servicos/$slug'
+    | '/en'
+    | '/es'
+    | '/en/servicos/$slug'
+    | '/es/servicos/$slug'
   id:
     | '__root__'
     | '/'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/trabalho'
+    | '/en/trabalho'
+    | '/es/trabalho'
     | '/servicos/$slug'
+    | '/en/'
+    | '/es/'
+    | '/en/servicos/$slug'
+    | '/es/servicos/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -83,7 +164,13 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TrabalhoRoute: typeof TrabalhoRoute
+  EnTrabalhoRoute: typeof EnTrabalhoRoute
+  EsTrabalhoRoute: typeof EsTrabalhoRoute
   ServicosSlugRoute: typeof ServicosSlugRoute
+  EnIndexRoute: typeof EnIndexRoute
+  EsIndexRoute: typeof EsIndexRoute
+  EnServicosSlugRoute: typeof EnServicosSlugRoute
+  EsServicosSlugRoute: typeof EsServicosSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,11 +203,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/es/': {
+      id: '/es/'
+      path: '/es'
+      fullPath: '/es/'
+      preLoaderRoute: typeof EsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/': {
+      id: '/en/'
+      path: '/en'
+      fullPath: '/en/'
+      preLoaderRoute: typeof EnIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/servicos/$slug': {
       id: '/servicos/$slug'
       path: '/servicos/$slug'
       fullPath: '/servicos/$slug'
       preLoaderRoute: typeof ServicosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/es/trabalho': {
+      id: '/es/trabalho'
+      path: '/es/trabalho'
+      fullPath: '/es/trabalho'
+      preLoaderRoute: typeof EsTrabalhoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/trabalho': {
+      id: '/en/trabalho'
+      path: '/en/trabalho'
+      fullPath: '/en/trabalho'
+      preLoaderRoute: typeof EnTrabalhoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/es/servicos/$slug': {
+      id: '/es/servicos/$slug'
+      path: '/es/servicos/$slug'
+      fullPath: '/es/servicos/$slug'
+      preLoaderRoute: typeof EsServicosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/servicos/$slug': {
+      id: '/en/servicos/$slug'
+      path: '/en/servicos/$slug'
+      fullPath: '/en/servicos/$slug'
+      preLoaderRoute: typeof EnServicosSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -131,7 +260,13 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TrabalhoRoute: TrabalhoRoute,
+  EnTrabalhoRoute: EnTrabalhoRoute,
+  EsTrabalhoRoute: EsTrabalhoRoute,
   ServicosSlugRoute: ServicosSlugRoute,
+  EnIndexRoute: EnIndexRoute,
+  EsIndexRoute: EsIndexRoute,
+  EnServicosSlugRoute: EnServicosSlugRoute,
+  EsServicosSlugRoute: EsServicosSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
