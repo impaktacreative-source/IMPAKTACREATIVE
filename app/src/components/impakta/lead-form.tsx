@@ -85,6 +85,8 @@ export function LeadForm({ locale }: { locale: Locale }) {
       if (!response.ok) throw new Error(String(response.status));
       form.reset();
       setStatus("sent");
+      // Meta Pixel conversion: a real lead was saved.
+      window.fbq?.("track", "Lead");
     } catch {
       setStatus("error");
     }
