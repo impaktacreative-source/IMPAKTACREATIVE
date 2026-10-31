@@ -4,13 +4,14 @@ import { getDictionary } from "@/lib/i18n/dictionary";
 import { getServicesForLocale } from "@/lib/services-data";
 
 // Contact / lead form shown in the contact block of every page. Submissions
-// go to Netlify Forms (form "lead", declared statically in
-// public/__forms.html so Netlify can detect it on an SSR site). The field
-// names match the IMPAKTA CRM import (nome, empresa, email, telefone,
-// servicos, orcamento, prazo, mensagem, origem, pagina, idioma, rgpd), so the
-// Netlify CSV export can be pasted straight into "Importar leads".
+// are inserted straight into the Supabase table public.leads (project
+// "impakta") with the publishable key. Row Level Security only lets anonymous
+// visitors INSERT; they cannot read, change or delete leads. The IMPAKTA CRM
+// reads that table with the button "Pedidos do site".
 
-const FORM_NAME = "lead";
+const SUPABASE_URL = "https://fxlgmndznasygpncgkkr.supabase.co";
+// Publishable key: safe in the browser, access is limited by RLS.
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_5YUpgFoOJXoyoE0IH-5RBA_1uZOEWLb";
 const WHATSAPP_URL = "https://wa.me/351936330812";
 
 // Service values are always the Portuguese names in sentence case, exactly as
@@ -43,28 +44,43 @@ export function LeadForm({ locale }: { locale: Locale }) {
     if (!data.get("rgpd")) return setProblem(f.errorConsent);
     setProblem("");
 
-    const body = new URLSearchParams();
-    body.set("form-name", FORM_NAME);
-    body.set("bot-field", String(data.get("bot-field") || ""));
-    body.set("nome", String(data.get("nome") || "").trim());
-    body.set("empresa", String(data.get("empresa") || "").trim());
-    body.set("email", email);
-    body.set("telefone", phone);
-    body.set("servicos", data.getAll("servicos").map(String).join("; "));
-    body.set("orcamento", String(data.get("orcamento") || ""));
-    body.set("prazo", String(data.get("prazo") || ""));
-    body.set("mensagem", String(data.get("mensagem") || "").trim());
-    body.set("origem", "Site (formulário)");
-    body.set("pagina", window.location.pathname);
-    body.set("idioma", locale);
-    body.set("rgpd", "sim");
+    // Bots fill the hidden honeypot field: pretend success, store nothing.
+    if (String(data.get("bot-field") || "")) {
+      form.reset();
+      setStatus("sent");
+      return;
+    }
+
+    const prazo = String(data.get("prazo") || "");
+    const urgencia = prazo === "Já" ? "alta" : prazo === "Este mês" ? "media" : prazo ? "baixa" : null;
+    const orNull = (value: string) => (value ? value : null);
+
+    const lead = {
+      nome: String(data.get("nome") || "").trim(),
+      empresa: orNull(String(data.get("empresa") || "").trim()),
+      email: orNull(email),
+      telefone: orNull(phone),
+      servico: orNull(data.getAll("servicos").map(String).join("; ")),
+      orcamento: orNull(String(data.get("orcamento") || "")),
+      prazo: orNull(prazo),
+      urgencia,
+      mensagem: orNull(String(data.get("mensagem") || "").trim()),
+      origem: "Site (formulário)",
+      pagina: window.location.pathname.slice(0, 300),
+      idioma: locale,
+      rgpd: true,
+    };
 
     setStatus("sending");
     try {
-      const response = await fetch("/__forms.html", {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: body.toString(),
+        headers: {
+          apikey: SUPABASE_PUBLISHABLE_KEY,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify(lead),
       });
       if (!response.ok) throw new Error(String(response.status));
       form.reset();
