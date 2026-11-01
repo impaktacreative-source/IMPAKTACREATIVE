@@ -2128,3 +2128,68 @@
     animation: none;
   }
 }
+
+/* ---- Cookie banner (RGPD) ----------------------------------------------------- */
+.impakta-cookies {
+  position: fixed;
+  z-index: 60;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  max-width: 34rem;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 1.1rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--impakta-white) 14%, transparent);
+  background: var(--impakta-black);
+  color: var(--impakta-white);
+  font-family: var(--impakta-font-body);
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--impakta-black) 45%, transparent);
+}
+.impakta-cookies__text {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--impakta-white) 82%, transparent);
+}
+.impakta-cookies__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+.impakta-cookies__btn {
+  padding: 0.6rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--impakta-white) 30%, transparent);
+  background: transparent;
+  color: var(--impakta-white);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.impakta-cookies__btn--primary {
+  border-color: var(--impakta-pink);
+  background: var(--impakta-pink);
+}
+.impakta-cookies__btn:focus-visible {
+  outline: 2px solid var(--impakta-green);
+  outline-offset: 2px;
+}
+.impakta-contact__bottom-links {
+  display: flex;
+  gap: 1.25rem;
+}
+.impakta-contact__bottom button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.impakta-contact__bottom button:hover {
+  color: var(--impakta-pink);
+}

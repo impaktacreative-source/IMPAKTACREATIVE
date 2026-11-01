@@ -20,6 +20,8 @@ import { reportHiggsfieldError } from "../lib/higgsfield-error-reporting";
 // Editing it via the app settings UI rewrites this file and redeploys the app.
 import appMetaJson from "../app-meta.json";
 import { IMPAKTA_THEME_COLOR } from "../lib/impakta-theme-color";
+import { getConsent, isInternalPath, loadMetaPixel } from "../lib/cookie-consent";
+import { CookieBanner } from "../components/impakta/cookie-banner";
 
 declare const __HF_DESIGN_INSPECTOR__: boolean;
 
@@ -40,22 +42,9 @@ type AppMeta = {
 
 const appMeta = appMetaJson as AppMeta;
 
-// Meta Pixel (Facebook/Instagram ads). The base code loads fbevents.js and
-// runs init; PageView is sent from RootComponent on every route change so
-// client-side navigations are counted too. The internal area /sistema is
-// never tracked.
-const META_PIXEL_ID = "1821720102301132";
-const META_PIXEL_BASE = `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${META_PIXEL_ID}');`;
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
-
-function isInternalPath(pathname: string) {
-  return pathname === "/sistema" || pathname.startsWith("/sistema/");
-}
+// Meta Pixel: loaded only after cookie consent (see lib/cookie-consent.ts and
+// the CookieBanner). PageView is sent from RootComponent on every route
+// change; the internal area /sistema is never tracked.
 
 // Build the document head (title / description / og: / twitter: / favicon) from
 // app-meta.json, falling back to the defaults above for any unset field.
@@ -212,22 +201,8 @@ function RootShell({ children }: { children: ReactNode }) {
           light editorial palette via .impakta-page, independent of this. */}
       <head>
         <HeadContent />
-        {isInternalPath(pathname) ? null : (
-          <script dangerouslySetInnerHTML={{ __html: META_PIXEL_BASE }} />
-        )}
       </head>
       <body className="bg-q-background-primary text-q-text-primary">
-        {isInternalPath(pathname) ? null : (
-          <noscript>
-            <img
-              alt=""
-              height="1"
-              src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
-              style={{ display: "none" }}
-              width="1"
-            />
-          </noscript>
-        )}
         {children}
         <Scripts />
       </body>
@@ -238,6 +213,11 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  // Load the pixel on the first visit after consent was given earlier.
+  useEffect(() => {
+    if (getConsent() === "granted" && !isInternalPath(window.location.pathname)) loadMetaPixel();
+  }, []);
 
   useEffect(() => {
     if (isInternalPath(pathname)) return;
@@ -267,6 +247,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      {isInternalPath(pathname) ? null : <CookieBanner locale={localeFromPathname(pathname)} />}
     </QueryClientProvider>
   );
 }

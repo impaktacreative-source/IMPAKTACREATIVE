@@ -2,6 +2,7 @@ import { InstagramIcon, WhatsappIcon } from "@/components/impakta/social-icons";
 import type { Locale } from "@/lib/i18n/locale";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { LeadForm } from "@/components/impakta/lead-form";
+import { openCookieBanner } from "@/lib/cookie-consent";
 
 // Shared footer/contact block rendered at the bottom of every IMPAKTA page
 // (home, /trabalho, /servicos/$slug) in all three languages, so contact
@@ -75,8 +76,13 @@ export function ContactSection({ locale }: { locale: Locale }) {
 
       <div className="impakta-contact__bottom">
         <span>{dict.contact.rights(year)}</span>
-        {/* TODO: point to a real privacy policy page once one exists */}
-        <a href="#">{dict.contact.privacy}</a>
+        <span className="impakta-contact__bottom-links">
+          {/* TODO: point to a real privacy policy page once one exists */}
+          <a href="#">{dict.contact.privacy}</a>
+          <button onClick={openCookieBanner} type="button">
+            Cookies
+          </button>
+        </span>
       </div>
     </section>
   );
