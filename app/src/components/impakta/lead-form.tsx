@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import type { Locale } from "@/lib/i18n/locale";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { getServicesForLocale } from "@/lib/services-data";
+import { trackMetaEvent } from "@/lib/cookie-consent";
 
 // Contact / lead form shown in the contact block of every page. Submissions
 // are inserted straight into the Supabase table public.leads (project
@@ -85,8 +86,9 @@ export function LeadForm({ locale }: { locale: Locale }) {
       if (!response.ok) throw new Error(String(response.status));
       form.reset();
       setStatus("sent");
-      // Meta Pixel conversion: a real lead was saved.
-      window.fbq?.("track", "Lead");
+      // Meta Lead conversion (Pixel + Conversions API, deduplicated): sent only
+      // after the lead is really saved in Supabase.
+      trackMetaEvent("Lead", { email: lead.email, phone: lead.telefone, name: lead.nome });
     } catch {
       setStatus("error");
     }

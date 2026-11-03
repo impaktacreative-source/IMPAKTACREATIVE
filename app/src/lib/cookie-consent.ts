@@ -3,7 +3,7 @@
 // localStorage; the "Cookies" link in the footer reopens the banner so the
 // visitor can change it at any time.
 
-export const META_PIXEL_ID = "1821720102301132";
+export const META_PIXEL_ID = "1153908067075200";
 const STORAGE_KEY = "impakta-cookies";
 export const OPEN_COOKIE_BANNER_EVENT = "impakta:open-cookie-banner";
 
@@ -63,6 +63,50 @@ export function loadMetaPixel(): Fbq {
   const fbq = window.fbq as unknown as Fbq;
   fbq("init", META_PIXEL_ID);
   return fbq;
+}
+
+// Unique id shared by the browser Pixel event and the Conversions API event,
+// so Meta counts the conversion once (deduplication).
+export function newEventId(name: string): string {
+  const rand =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `${name.toLowerCase()}-${rand}`;
+}
+
+function readCookie(name: string): string | undefined {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : undefined;
+}
+
+type UserData = { email?: string | null; phone?: string | null; name?: string | null };
+
+// Meta conversion sent twice with the same event id: by the Pixel in the
+// browser and by the Conversions API (server, netlify/functions/meta-capi.mjs).
+// Only runs with cookie consent, like the Pixel itself.
+export function trackMetaEvent(eventName: string, user: UserData = {}) {
+  if (getConsent() !== "granted" || isInternalPath(window.location.pathname)) return;
+  const eventId = newEventId(eventName);
+  window.fbq?.("track", eventName, {}, { eventID: eventId });
+  const body = JSON.stringify({
+    event_name: eventName,
+    event_id: eventId,
+    event_source_url: window.location.href,
+    fbp: readCookie("_fbp"),
+    fbc: readCookie("_fbc"),
+    ...user,
+  });
+  try {
+    fetch("/.netlify/functions/meta-capi", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body,
+      keepalive: true,
+    }).catch(() => {});
+  } catch {
+    /* the browser Pixel event above still counts */
+  }
 }
 
 export function openCookieBanner() {
