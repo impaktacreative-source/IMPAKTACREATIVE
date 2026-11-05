@@ -1540,6 +1540,94 @@
   color: var(--impakta-pink);
 }
 
+/* ---- "Material que captamos" photo wall (home, below services) ---------- */
+.impakta-captured {
+  padding: clamp(4.5rem, 9vw, 7.5rem) clamp(1.25rem, 6vw, 5rem);
+  background: var(--impakta-black);
+  color: var(--impakta-white);
+}
+.impakta-captured__inner {
+  max-width: 82rem;
+  margin: 0 auto;
+}
+.impakta-captured__head {
+  max-width: 44rem;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+.impakta-captured__title {
+  margin: 0;
+  font-family: var(--impakta-font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.impakta-captured__lead {
+  margin: 1rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--impakta-white) 70%, transparent);
+}
+.impakta-captured__grid {
+  columns: 4 16rem;
+  column-gap: 0.75rem;
+}
+.impakta-captured__item {
+  margin: 0 0 0.75rem;
+  break-inside: avoid;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--impakta-white) 6%, transparent);
+}
+.impakta-captured__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.6s ease;
+}
+.impakta-captured__item:hover img {
+  transform: scale(1.03);
+}
+.impakta-captured__more {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.impakta-captured__more-btn {
+  padding: 1rem 2.2rem;
+  border: 1.5px solid var(--impakta-pink);
+  background: transparent;
+  color: var(--impakta-white);
+  font-family: var(--impakta-font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.impakta-captured__more-btn:hover {
+  background: var(--impakta-pink);
+  color: var(--impakta-black);
+}
+.impakta-captured__more-btn:focus-visible {
+  outline: 2px solid var(--impakta-green);
+  outline-offset: 3px;
+}
+@media (max-width: 640px) {
+  .impakta-captured__grid {
+    columns: 2;
+    column-gap: 0.5rem;
+  }
+  .impakta-captured__item {
+    margin-bottom: 0.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .impakta-captured__item img {
+    transition: none;
+  }
+}
+
 /* ---- /trabalho portfolio page ------------------------------------------------ */
 .impakta-trabalho-hero {
   padding: clamp(8rem, 14vw, 11rem) clamp(1.25rem, 6vw, 5rem) clamp(3rem, 6vw, 4.5rem);

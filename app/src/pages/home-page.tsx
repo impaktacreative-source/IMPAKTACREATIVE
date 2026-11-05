@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 
 import { ImpaktaNav } from "@/components/impakta/impakta-nav";
 import { ContactSection } from "@/components/impakta/contact-section";
@@ -43,6 +44,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         }
       />
       <ServicesSection locale={locale} />
+      <CapturedSection locale={locale} />
       <CeoSection locale={locale} />
       <NumbersSection locale={locale} />
       <WorkSection locale={locale} />
@@ -173,6 +175,63 @@ function ServicesSection({ locale }: { locale: Locale }) {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+// Photos and videos the IMPAKTA team shot on location for clients. Files live
+// in /assets/captacoes as captacao-NN.jpg (1600px) + captacao-NN-800.jpg
+// (800px, used on phones). No client names here on purpose: client logos
+// get their own block.
+const CAPTURED_COUNT = 29;
+const CAPTURED_INITIAL = 12;
+const CAPTURED_PHOTOS = Array.from({ length: CAPTURED_COUNT }, (_, i) => {
+  const n = String(i + 1).padStart(2, "0");
+  return { large: `/assets/captacoes/captacao-${n}.jpg`, small: `/assets/captacoes/captacao-${n}-800.jpg` };
+});
+
+function CapturedSection({ locale }: { locale: Locale }) {
+  const dict = getDictionary(locale);
+  const { ref, isVisible } = useReveal<HTMLElement>();
+  const [showAll, setShowAll] = useState(false);
+  const photos = showAll ? CAPTURED_PHOTOS : CAPTURED_PHOTOS.slice(0, CAPTURED_INITIAL);
+  return (
+    <section
+      className={`impakta-captured impakta-reveal${isVisible ? " is-visible" : ""}`}
+      id="captacoes"
+      ref={ref}
+    >
+      <div className="impakta-captured__inner">
+        <div className="impakta-captured__head">
+          <p className="impakta-eyebrow">
+            <span aria-hidden="true" className="impakta-crosshair" />
+            {dict.captured.eyebrow}
+          </p>
+          <h2 className="impakta-captured__title">{dict.captured.title}</h2>
+          <p className="impakta-captured__lead">{dict.captured.lead}</p>
+        </div>
+        <div className="impakta-captured__grid">
+          {photos.map((photo, i) => (
+            <figure className="impakta-captured__item" key={photo.large}>
+              <img
+                alt={dict.captured.photoAlt(i + 1)}
+                decoding="async"
+                loading="lazy"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                src={photo.small}
+                srcSet={`${photo.small} 800w, ${photo.large} 1600w`}
+              />
+            </figure>
+          ))}
+        </div>
+        {CAPTURED_COUNT > CAPTURED_INITIAL ? (
+          <div className="impakta-captured__more">
+            <button className="impakta-captured__more-btn" onClick={() => setShowAll((v) => !v)} type="button">
+              {showAll ? dict.captured.showLess : dict.captured.showAll(CAPTURED_COUNT)}
+            </button>
+          </div>
+        ) : null}
       </div>
     </section>
   );

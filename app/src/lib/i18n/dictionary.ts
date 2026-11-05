@@ -41,6 +41,14 @@ const pt = {
     eyebrow: "O que fazemos",
     linkLabel: "Saber mais",
   },
+  captured: {
+    eyebrow: "Material que captamos",
+    title: "Captado pela nossa equipa.",
+    lead: "Fotografias feitas por nós no local, para marcas de restauração.",
+    photoAlt: (n: number) => `Fotografia captada pela IMPAKTA ${n}`,
+    showAll: (n: number) => `Ver todas (${n})`,
+    showLess: "Ver menos",
+  },
   ceo: {
     eyebrow: "Fundadora",
     name: "Priscila Figueiredo Silva",
@@ -200,6 +208,14 @@ const en: Dictionary = {
     eyebrow: "What we do",
     linkLabel: "Learn more",
   },
+  captured: {
+    eyebrow: "Material we captured",
+    title: "Shot by our team.",
+    lead: "Photos we shot on location for restaurant brands.",
+    photoAlt: (n: number) => `Photo captured by IMPAKTA ${n}`,
+    showAll: (n: number) => `See all (${n})`,
+    showLess: "See less",
+  },
   ceo: {
     eyebrow: "Founder",
     name: "Priscila Figueiredo Silva",
@@ -358,6 +374,14 @@ const es: Dictionary = {
   services: {
     eyebrow: "Qué hacemos",
     linkLabel: "Saber más",
+  },
+  captured: {
+    eyebrow: "Material que capturamos",
+    title: "Capturado por nuestro equipo.",
+    lead: "Fotografías hechas por nosotros en el lugar, para marcas de restauración.",
+    photoAlt: (n: number) => `Fotografía capturada por IMPAKTA ${n}`,
+    showAll: (n: number) => `Ver todas (${n})`,
+    showLess: "Ver menos",
   },
   ceo: {
     eyebrow: "Fundadora",
