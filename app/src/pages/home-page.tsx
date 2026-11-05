@@ -18,7 +18,6 @@ const STORY_PHOTOS = [
   "/assets/founder/priscila-03.jpg",
   "/assets/founder/priscila-06.jpg",
   "/assets/founder/priscila-08.jpg",
-  "/assets/founder/priscila-09.jpg",
   "/assets/founder/priscila-10.jpg",
 ];
 

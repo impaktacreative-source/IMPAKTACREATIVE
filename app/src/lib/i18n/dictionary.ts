@@ -75,10 +75,6 @@ const pt = {
         text: "Atenta a cada detalhe, mesmo fora do estúdio — a captar o momento em tempo real.",
       },
       {
-        alt: "Retrato de Priscila, olhar direto para a câmara",
-        text: "Presente em cada reunião, cada apresentação, cada decisão que molda uma marca.",
-      },
-      {
         alt: "Priscila a sorrir, recostada na cadeira",
         text: "E genuína em cada momento — dentro e fora do trabalho.",
       },
@@ -242,10 +238,6 @@ const en: Dictionary = {
         text: "Attentive to every detail, even outside the studio — capturing the moment in real time.",
       },
       {
-        alt: "Portrait of Priscila, looking directly at the camera",
-        text: "Present in every meeting, every presentation, every decision that shapes a brand.",
-      },
-      {
         alt: "Priscila smiling, leaning back in her chair",
         text: "And genuine in every moment — on and off the job.",
       },
@@ -407,10 +399,6 @@ const es: Dictionary = {
       {
         alt: "Priscila fotografiando a una invitada con el móvil, durante una cena de evento",
         text: "Atenta a cada detalle, incluso fuera del estudio — captando el momento en tiempo real.",
-      },
-      {
-        alt: "Retrato de Priscila, mirando directamente a la cámara",
-        text: "Presente en cada reunión, cada presentación, cada decisión que moldea una marca.",
       },
       {
         alt: "Priscila sonriendo, recostada en la silla",
